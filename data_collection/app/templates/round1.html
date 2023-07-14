@@ -9,13 +9,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'css/project.css' %}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
         body {
             background: #FDC830;
             background: -webkit-linear-gradient(to right, #F37335, #FDC830);
             background: linear-gradient(to right, #F37335, #FDC830);
         }
-        
+        .form-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
     </style>
 </head>
 <body>
@@ -27,14 +36,19 @@
                 </div>
     {% endif %}
     <form class="form" method="POST" action="{% url 'round1' project_id=project_id %}" enctype="multipart/form-data">
-{% comment %} /round1/{{ project_id }}/ {% endcomment %}
         {% csrf_token %}
-        <h2>Round 1 Profile</h2>
+        <div class="form-header">
+            <h2>Round1</h2>
+            <a class="btn btn-primary" href="{% url 'dashboard'  %}">Dashboard</a>
+        </div>
         <div class="form-group">
             <label for="date">Date:</label>
             <br>
             <div class="relative">
-                <input name="date" class="form-control" id="date" type="date" autofocus="" autocomplete="" placeholder="Select date...">
+                <input name="date" class="form-control" id="date" type="date" autofocus="" autocomplete="" placeholder="Select date..." 
+                {% if round1_data.date %}
+                value="{{round1_data.date|default_if_none:''|date:'Y-m-d'}}"
+                {% endif %}>
                 <i class="fa fa-calendar"></i>
             </div>
             <br>
@@ -42,7 +56,8 @@
         <div class="form-group">
             <label for="screenshot_shared">Screenshot Shared:</label>
             <div class="relative">
-                <input name="screenshot_shared" class="form-control" id="screenshot_shared" type="file">
+                {% comment %} {% if round1_data.screeshot_shared %} {% endcomment %}
+                <input name="screenshot_shared" class="form-control" id="screenshot_shared" type="file" value="{{round1_data.screenshot_shared }}" />
                 <i class="fa fa-file logo"></i>
             </div>
         </div>
@@ -50,7 +65,7 @@
         <div class="form-group">
             <label for="our_review">Our Review:</label>
             <div class="relative">
-                <textarea class="form-control" name="our_review" id="our_review" placeholder="Type your review..."></textarea>
+                <textarea class="form-control" name="our_review" id="our_review" placeholder="Type your review...">{{ round1_data.our_review }}</textarea>
                 <i class="fa fa-message"></i>
             </div>
         </div>
@@ -58,7 +73,7 @@
         <div class="form-group">
             <label for="client_review">Client Review:</label>
             <div class="relative">
-                <textarea class="form-control" name="client_review" id="client_review" placeholder="Type your review..."></textarea>
+                <textarea class="form-control" name="client_review" id="client_review" placeholder="Type your review...">{{ round1_data.client_review }}</textarea>
                 <i class="fa fa-message"></i>
             </div>
         </div>

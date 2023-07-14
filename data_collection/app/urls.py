@@ -2,6 +2,7 @@ from django.urls import path
 from app import views
 from app.middlewares import firstmiddleware
 from app.middlewares import secondmiddleware
+
 urlpatterns = [
     path("login/",views.login,name="login"),
     path("logout/",views.logout,name="logout"),

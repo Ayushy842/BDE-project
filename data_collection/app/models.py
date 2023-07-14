@@ -29,7 +29,7 @@ class Project(models.Model):
             
 class Round1(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    date = models.DateField(default='')
+    date = models.DateField(blank=True,null=True,default=None)
     screenshot_shared = models.ImageField(upload_to='screenshots/', blank=True, null=True)
     our_review = models.TextField(default='')   
     client_review = models.TextField(default='')
@@ -40,7 +40,7 @@ class Round1(models.Model):
 
 class Round2(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    date = models.DateField(default='')
+    date = models.DateField(blank=True,null=True,default=None)
     screenshot_shared = models.ImageField(upload_to='screenshots/', blank=True, null=True)
     our_review = models.TextField(default='')   
     client_review = models.TextField(default='')
@@ -50,7 +50,7 @@ class Round2(models.Model):
 
 class Round3(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    date = models.DateField(default='')
+    date = models.DateField(blank=True,null=True,default=None)
     screenshot_shared = models.ImageField(upload_to='screenshots/', blank=True, null=True)
     our_review = models.TextField(default='')   
     client_review = models.TextField(default='')

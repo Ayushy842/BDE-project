@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 {% load static %}
-{% load static custom_tags %}
 
 <html>
 <head>
@@ -63,9 +62,9 @@
                     <td>{{ data.project_name }}</td>
                     <td>{{ data.technology }}</td>
                     <td>{{ data.project_date }}</td>
-                    <td>{{ data.round1_date|default:'Not available' }}</td>
-                    <td>{{ data.round2_date|default:'Not available'}}</td>
-                    <td>{{ data.round3_date|default:'Not available'}}</td>
+                    <td>{{ data.round1_date|default:'...........................' }}</td>
+                    <td>{{ data.round2_date|default:'...........................'}}</td>
+                    <td>{{ data.round3_date|default:'...........................'}}</td>
                     <td>
                         <a class="btn btn-primary" href="{% url 'edit_project' data.project_id %}">Edit</a>
                        

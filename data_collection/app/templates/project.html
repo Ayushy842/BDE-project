@@ -1,100 +1,135 @@
 <!DOCTYPE html>
 {% load static %}
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static 'css/project.css' %}">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{% static 'css/project.css' %}" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
     <style>
-        
-        body {
-            background: #FDC830;
-            background: -webkit-linear-gradient(to right, #F37335, #FDC830);
-            background: linear-gradient(to right, #F37335, #FDC830);
-        }
+      body {
+        background: #fdc830;
+        background: -webkit-linear-gradient(to right, #f37335, #fdc830);
+        background: linear-gradient(to right, #f37335, #fdc830);
+      }
+      .form-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
     </style>
-</head>
-<body>
-<form class="form" method="POST" action="{% url 'project' %}">
-    {% csrf_token %}
-    <h2>Project Profile</h2>
-    <bold>
-        Welcome, {{ request.session.user }}!
-    </bold>
-    <div class="form-group">
+  </head>
+  <body>
+    <form class="form" method="POST" action="{% url 'project' %}">
+      {% csrf_token %}
+      <div class="form-header">
+        <h2>Project Profile</h2>
+        <a class="btn btn-primary" href="{% url 'dashboard'  %}">Dashboard</a>
+      </div>
+      <bold> Welcome, {{ request.session.user }}! </bold><br /><br />
+      <div class="form-group">
         <label for="name">Project Name:</label>
-        <br>
+        <br />
         <div class="relative">
-            <input name ="project_name" class="form-control" id="name" type="text" required="" autofocus=""
-                   title="Username should only contain letters. e.g. Piyush Gupta" autocomplete=""
-                   placeholder="Type The Project name here...">
-            <i class="fa fa-user"></i>
+          <input
+            name="project_name"
+            class="form-control"
+            id="name"
+            type="text"
+            required=""
+            autofocus=""
+            title="Username should only contain letters. e.g. Piyush Gupta"
+            autocomplete=""
+            placeholder="Type The Project name here..."
+          />
+          <i class="fa fa-user"></i>
         </div>
-    </div><br>
-    <div class="form-group">
-        <label for="name">Requirement Received :</label>
-        <br>
-        <div class="relative">
-            <input name ="requirement_recieved" class="form-control" id="name" type="text" required="" autofocus=""
-                   title="Username should only contain letters. e.g. Ayush Yadav" autocomplete=""
-                   placeholder="Type The Requirement Received here...">
-            <i class="fa fa-inbox"></i>
-        </div>
-    </div><br>
-    <div class="form-group">
-        <label for="date">Date:</label>
-        <div class="relative">
-            <input name="date" pattern="\d{2}-\d{2}-\d{4}"  class="form-control" id="date" type="date" required="">
+      </div>
+      <br />
+      <fieldset>
+        <legend><span>Requirement Received</span></legend>
+        <div class="form-group">
+          <label for="date">Date:</label>
+          <div class="relative">
+            <input
+              name="date"
+              class="form-control"
+              id="date"
+              type="date"
+              required=""
+            />
             <i class="fa fa-calendar"></i>
+          </div>
         </div>
-    </div><br>
-    <div class="form-group">
-        <label for="technology">Technology:</label>
-        <div class="relative">
-            <input name="technology" class="form-control" id="technology" type="text" required=""
-                   placeholder="Type The Technology...">
+        <br />
+        <div class="form-group">
+          <label for="technology">Technology:</label>
+          <div class="relative">
+            <input
+              name="technology"
+              class="form-control"
+              id="technology"
+              type="text"
+              required=""
+              placeholder="Type The Technology..."
+            />
             <i class="fa fa-inbox"></i>
+          </div>
         </div>
-    </div><br>
-    <div class="form-group">
+      </fieldset>
+      <br />
+      <div class="form-group">
         <label for="resume">Resume Shared:</label>
         <div class="relative">
-            <input name="resume_shared" class="form-check-input" id="resume" value="YES" type="radio">
-            <label class="form-check-label" for="resume">Yes</label>
-            <input name="resume_shared" class="form-check-input" id="resume" value="NO" type="radio">
-            <label class="form-check-label" for="resume">NO</label>
+          <div class="form-check">
+            <input
+              name="resume_shared"
+              class="form-check-input"
+              id="resume-yes"
+              value="YES"
+              type="radio"
+            />
+            <label class="form-check-label" for="resume-yes">Yes</label>
+          </div>
+          <div class="form-check">
+            <input
+              name="resume_shared"
+              class="form-check-input"
+              id="resume-no"
+              value="NO"
+              type="radio"
+            />
+            <label class="form-check-label" for="resume-no">No</label>
+          </div>
         </div>
-    </div><br>
-    {% comment %} <div class="form-group">
-        <label for="attachment">Attachment:</label>
-        <div class="relative">
-            <div class="input-group">
-                <label class="input-group-btn">
-                    <span class="btn btn-default">
-                        Browse&hellip; <input type="file" style="display: none;" multiple>
-                    </span>
-                </label>
-                <input type="text" class="form-control" required="" placeholder="Attachment..." readonly>
-                <i class="fa fa-link"></i>
-            </div>
-        </div>
-    </div> {% endcomment %}
+      </div>
+      <br />
 
-    <div class="tright">
-        <button class="movebtn movebtnre" type="reset"><i class="fa fa-fw fa-refresh"></i> Reset </button>
-        <button class="movebtn movebtnsu" type="submit">Submit <i class="fa fa-fw fa-paper-plane"></i></button>
-    </div>
-</form>
+      <div class="tright">
+        <button class="movebtn movebtnre" type="reset">
+          <i class="fa fa-fw fa-refresh"></i> Reset
+        </button>
+        <button class="movebtn movebtnsu" type="submit">
+          Submit <i class="fa fa-fw fa-paper-plane"></i>
+        </button>
+      </div>
+    </form>
 
-<div class="thanks" style="display: none;">
-    <h4>Thank you!</h4>
-    <p><small>Your message has been successfully sent.</small></p>
-</div>
-
-<script src="{% static 'js/project.js' %}" async defer></script>
-</body>
+    <script src="{% static 'js/project.js' %}" async defer></script>
+  </body>
 </html>
