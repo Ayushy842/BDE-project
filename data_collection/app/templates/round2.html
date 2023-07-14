@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/project.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #FDC830;
+            background: -webkit-linear-gradient(to right, #F37335, #FDC830);
+            background: linear-gradient(to right, #F37335, #FDC830);
+        }
+        
+    </style>
+</head>
+<body>
+    {% if errors %}
+                <div class="alert alert-danger">
+                    {% for error in errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+                {% endif %}
+    <form class="form" method="POST" action="{% url 'round2' project_id=project_id %}" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        <h2>Round 2 Profile</h2>
+        <div class="form-group">
+            <label for="date">Date:</label>
+            <br>
+            <div class="relative">
+                <input name="date" class="form-control" id="date" type="date" required="" autofocus="" autocomplete="" placeholder="Select date...">
+                <i class="fa fa-calendar"></i>
+            </div><br>
+        </div>
+        <div class="form-group">
+            <label for="screenshot_shared">Screenshot Shared:</label>
+            <div class="relative">
+                <input name="screenshot_shared" class="form-control" id="screenshot_shared" type="file">
+                <i class="fa fa-check"></i>
+            </div>
+        </div><br>
+        <div class="form-group">
+            <label for="our_review">Our Review:</label>
+            <div class="relative">
+                <textarea name="our_review" class="form-control" id="our_review" required="" placeholder="Type your review..."></textarea>
+                <i class="fa fa-pencil"></i>
+            </div>
+        </div><br>
+        <div class="form-group">
+        <div class="form-group">
+            <label for="client_review">Client Review:</label>
+            <div class="relative">
+                <textarea name="client_review" class="form-control" id="our_review" required="" placeholder="Type your review..."></textarea>
+                <i class="fa fa-pencil"></i>
+            </div>
+        </div><br>
+
+        <div class="tright">
+            <button class="movebtn movebtnre" type="reset"><i class="fa fa-fw fa-refresh"></i> Reset </button>
+            <button class="movebtn movebtnsu" type="submit">Submit <i class="fa fa-fw fa-paper-plane"></i></button>
+        </div>
+    </form>
+
+    <div class="thanks" style="display: none;">
+        <h4>Thank you!</h4>
+        <p><small>Your message has been successfully sent.</small></p>
+    </div>
+    <script src="{% static 'js/project.js' %}" async defer></script>
+</body>
+</html>

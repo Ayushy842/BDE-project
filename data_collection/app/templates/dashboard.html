@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard | {% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+        .navbar {
+            background-color: #f8f9fa;
+            padding: 10px 0;
+        }
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        .table {
+            margin-top: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .add-form {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body bgcolour ="cyan">
+    
+    <h1>Hello  {{ request.session.user }}!</h1>
+    <div class="container">
+        <h1>Project Details Dashboard</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Sno.</th>
+                    <th scope="col">Project Name</th>
+                    <th scope="col">Technology</th>
+                    <th scope="col">Project Date</th>
+                    <th scope="col">first Round</th>
+                    <th scope="col">second Round</th>
+                    <th scope="col">third Round</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in all_data %}
+                <tr>
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td>{{ data.project_name }}</td>
+                    <td>{{ data.technology }}</td>
+                    <td>{{ data.project_date }}</td>
+                    <td>{{ data.round1_date|default:'Not available' }}</td>
+                    <td>{{ data.round2_date|default:'Not available' }}</td>
+                    <td>{{ data.round3_date|default:'Not available' }}</td>
+                    {% comment %} <form action="{% url 'login' %}" method="POST"> {% endcomment %}
+                        <td>
+                            <input type="button" class="btn btn-primary" onclick="redirectToPage()" value="Edit" />
+                            
+                        </td>
+                        <td>
+                            <input type="button" class="btn btn-primary" onclick="redirectToPage()" value="Delete" />
+                            
+                        </td>
+                    {% comment %} </form> {% endcomment %}
+                </tr>
+                {% endfor %}
+                
+            </tbody>
+        </table>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
