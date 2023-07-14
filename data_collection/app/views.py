@@ -85,15 +85,14 @@ def project(request):
             technology = request.POST.get('technology')
             date = datetime.datetime.strptime(request.POST.get('date'), '%Y-%m-%d').date()
             print("date",date)
-            requirement_recieved = request.POST.get('requirement_recieved')
             resume_shared = request.POST.get('resume_shared', 'NO') 
             logged_in_user = models.BDE_User.objects.get(username=request.session['user'])
             
             if resume_shared == 'NO':
-                project = models.Project(project_name=project_name, date=date, technology=technology, requirement_recieved=requirement_recieved, resume_shared=False, edited_by=logged_in_user)
+                project = models.Project(project_name=project_name, date=date, technology=technology, resume_shared=False, edited_by=logged_in_user)
                 project.save()
                 return redirect('dashboard')
-            project = models.Project(project_name=project_name, date=date, technology=technology, requirement_recieved=requirement_recieved, resume_shared=True, edited_by=logged_in_user)
+            project = models.Project(project_name=project_name, date=date, technology=technology, resume_shared=True, edited_by=logged_in_user)
 
             project.save()
             print("Project ID: ", project.id)

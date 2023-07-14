@@ -13,18 +13,10 @@ class Project(models.Model):
     project_name = models.CharField(max_length=256)
     date = models.DateField(default='',blank=True)
     technology = models.CharField(max_length=256, blank=True)
-    requirement_recieved = models.CharField(max_length=256,default='')
     resume_shared = models.BooleanField(default=False)
     edited_by = models.ForeignKey(BDE_User,on_delete=models.SET_NULL,null=True)
     def __str__(self) -> str:
         return self.project_name
-    def save(self,*args,**kwargs):
-        if self.requirement_recieved:
-            super().save(*args,**kwargs)
-        else:   
-            self.date = None    
-            self.technology = ''    
-            super().save(*args,**kwargs)
             
             
 class Round1(models.Model):
