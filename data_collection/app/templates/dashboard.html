@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+{% load static %}
+{% load static custom_tags %}
+
 <html>
 <head>
     <title>Dashboard | {% block title %}{% endblock title %}</title>
@@ -6,6 +9,7 @@
     <style>
         body {
             padding: 20px;
+            background-color:seashell;
         }
         .navbar {
             background-color: #f8f9fa;
@@ -29,10 +33,17 @@
     </style>
 </head>
 <body bgcolour ="cyan">
-    
-    <h1>Hello  {{ request.session.user }}!</h1>
+    </div>
+    </nav>
+    <div class="dashboard-container">
+        <h1 class="dashboard-title">Welcome to the Dashboard, {{ request.session.user }}! </h1>
+    </div>
     <div class="container">
-        <h1>Project Details Dashboard</h1>
+        <h3 class="inline" >Project Details</h3>
+        <div class="float-right">
+            <a  class="btn btn-primary" href="{% url 'project'  %}" >Create Project</a>
+            <a class="btn btn-danger" href="{% url 'login' %}">Logout<a/>
+        </div>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -40,9 +51,9 @@
                     <th scope="col">Project Name</th>
                     <th scope="col">Technology</th>
                     <th scope="col">Project Date</th>
-                    <th scope="col">first Round</th>
-                    <th scope="col">second Round</th>
-                    <th scope="col">third Round</th>
+                    <th scope="col">Round 1  </th>
+                    <th scope="col">Round 2  </th>
+                    <th scope="col">Round 3  </th>
                 </tr>
             </thead>
             <tbody>
@@ -53,24 +64,21 @@
                     <td>{{ data.technology }}</td>
                     <td>{{ data.project_date }}</td>
                     <td>{{ data.round1_date|default:'Not available' }}</td>
-                    <td>{{ data.round2_date|default:'Not available' }}</td>
-                    <td>{{ data.round3_date|default:'Not available' }}</td>
-                    {% comment %} <form action="{% url 'login' %}" method="POST"> {% endcomment %}
-                        <td>
-                            <input type="button" class="btn btn-primary" onclick="redirectToPage()" value="Edit" />
-                            
-                        </td>
-                        <td>
-                            <input type="button" class="btn btn-primary" onclick="redirectToPage()" value="Delete" />
-                            
-                        </td>
-                    {% comment %} </form> {% endcomment %}
+                    <td>{{ data.round2_date|default:'Not available'}}</td>
+                    <td>{{ data.round3_date|default:'Not available'}}</td>
+                    <td>
+                        <a class="btn btn-primary" href="{% url 'edit_project' data.project_id %}">Edit</a>
+                       
+                    </td>
+                    <td>
+                            <a class="btn btn-primary" value="Delete" onclick="return confirm('Are you sure you want to delete this project?')" href="{% url 'delete' data.project_id %}">Delete</a>
+    
+                    </td>
                 </tr>
-                {% endfor %}
                 
+                {% endfor %}
             </tbody>
         </table>
-
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

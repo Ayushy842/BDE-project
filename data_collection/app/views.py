@@ -1,10 +1,11 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from requests import session
 from app import models
 import datetime
 from django.contrib import messages
+
 # Create your views here.
 def dashboard(request):
     projects = models.Project.objects.all()
@@ -50,6 +51,32 @@ def logout(request):
 def success(request):
     return render(request,'success.html')
 
+def delete(request, project_id):
+    project = models.Project.objects.get(id=project_id)
+    project.delete()
+    return redirect('dashboard')
+
+def edit_project(request, project_id):
+    project = get_object_or_404(models.Project, pk=project_id)
+    
+    if request.method == 'POST':
+        project.project_name = request.POST.get('project_name')
+        project.technology = request.POST.get('technology')
+        project.date = request.POST.get('date')
+        project.requirement_recieved = request.POST.get('requirement_recieved')
+        project.edited_by = models.BDE_User.objects.get(username=request.session['user'])
+        resume_shared = request.POST.get('resume_shared')
+        print("Resume",resume_shared)
+        if resume_shared=="no":
+            project.resume_shared=False
+            return redirect('dashboard')
+        project.resume_shared=True
+        return redirect(round1,project_id=project.id)
+    context = {
+        'project': project,
+    }
+    return render(request, 'edit_project.html', context)
+               
 
 def login(request):
     if request.method=="POST":

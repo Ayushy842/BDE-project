@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/project.css' %}">
+    <style>
+        body {
+            background: #FDC830;
+            background: -webkit-linear-gradient(to right, #F37335, #FDC830);
+            background: linear-gradient(to right, #F37335, #FDC830);
+        }
+    </style>
+</head>
+<body>
+    <a class="btn btn-primary" href="{% url 'dashboard' %}" >Go back to dashboard</a>
+    <form class="form" method="POST" action="{% url 'edit_project' project.id %}">
+        {% csrf_token %} 
+        <h2>Project Profile</h2>
+        <div class="form-group">
+            <label for="email">Project Name:</label>
+            <br>
+            <div class="relative">
+                <input class="form-control" id="name" name="project_name" type="text" pattern="[a-zA-Z\s]+" required="" autofocus="" title="Username should only contain letters. e.g. Piyush Gupta" autocomplete="" placeholder="Type your Project name here..." value="{{ project.project_name }}">
+                <i class="fa fa-user"></i>
+            </div><br>
+        </div> 
+        <fieldset>
+            <legend>Requirements Received</legend>
+    <div class="form-group">
+        <label for="date">Date:</label>
+        <div class="relative">
+            <input class="form-control" type="date" name="date" pattern="\d{2}-\d{2}-\d{4}" required="" placeholder="mention date here...">
+            <i class="fa fa-envelope"></i>
+        </div>
+    </div><br>
+    <div class="form-group">
+        <label for="technology">Technology:</label>
+        <div class="relative">
+            <textarea class="form-control" name="technology" rows="7" cols="40" required="" placeholder="Enter project technology..."></textarea>
+            <i class="fa fa-phone"></i>
+        </div>
+    </div>
+</fieldset><br>
+        <div class="form-group">
+            <label for="resume_shared">Resume Shared:</label>
+            <div class="radio-inline " style='flex-direction:column;'>
+                <label class="radio-label ">
+                    <input type="radio" name="resume_shared" value="yes" required="" {% if project.resume_shared %}checked{% endif %}>
+                    <span class="radio-custom"></span>
+                    <span class="radio-text">Yes</span>
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="resume_shared" value="no" required="" {% if not project.resume_shared %}checked{% endif %}>
+                    <span class="radio-custom"></span>
+                    <span class="radio-text">No</span>
+                </label>
+            </div>
+        </div><br>
+        <div class="tright">
+            <a href=""><button class="movebtn movebtnre" type="reset"><i class="fa fa-fw fa-refresh"></i> Reset</button></a>
+            <button class="movebtn movebtnsu" type="submit">Update<i class="fa fa-fw fa-paper-plane"></i></button>
+        </div>
+    </form>
+    <script src="{% static 'js/project.js' %}" async defer></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
