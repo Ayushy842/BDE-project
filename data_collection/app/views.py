@@ -6,6 +6,8 @@ from app import models
 import datetime
 from django.contrib import messages
 from django.utils.dateparse import parse_date
+
+
 # Create your views here.
 def dashboard(request):
     projects = models.Project.objects.all()
@@ -44,12 +46,15 @@ def dashboard(request):
 
     return render(request, 'dashboard.html', {'all_data': all_data})
 
+
 def logout(request):
     del request.session['user']
     return redirect('login')
 
+
 def success(request):
     return render(request,'success.html')
+
 
 def delete(request, project_id):
     project = models.Project.objects.get(id=project_id)
@@ -105,6 +110,7 @@ def project(request):
         
         return render(request, 'project.html')
 
+
 def round1(request, project_id):
     project = models.Project.objects.get(id=project_id)
     round1_data, created = models.Round1.objects.get_or_create(project=project)
@@ -150,6 +156,7 @@ def round1(request, project_id):
     else:
         return render(request, 'round1.html', {'project_id': project_id,'round1_data': round1_data,})
     
+
 def round2(request, project_id):
     project = models.Project.objects.get(id=project_id)
     round2_data, created = models.Round2.objects.get_or_create(project=project)
@@ -249,7 +256,6 @@ def round3(request, project_id):
 
 def edit_project(request, project_id):
     project = get_object_or_404(models.Project, pk=project_id)
-    
     if request.method == 'POST':
         project.project_name = request.POST.get('project_name')
         project.technology = request.POST.get('technology')

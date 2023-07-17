@@ -31,7 +31,7 @@
     </style>
   </head>
   <body>
-    <div class="success-container">
+    <div class="success-container" style="color: white">
       <h2>Success!</h2>
       <p>
         Thank you for submitting the Project details. Your information has been
@@ -39,8 +39,18 @@
       </p>
     </div>
 
-    <a href="{% url 'dashboard' %}" class="button">Go back to dashboard</a>
-    <a href="{% url 'logout' %}" class="logout-button">Logout</a>
+    <a
+      href="{% url 'dashboard' %}"
+      class="movebtn movebtnsu"
+      style="text-decoration: none"
+      >Dashboard</a
+    >
+    <a
+      href="{% url 'logout' %}"
+      class="movebtn movebtnsu"
+      style="text-decoration: none"
+      >Logout</a
+    >
 
     <script src="{% static 'js/project.js' %}" async defer></script>
   </body>
