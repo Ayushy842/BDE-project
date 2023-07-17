@@ -70,7 +70,8 @@ def login(request):
             bde_user = models.BDE_User.objects.get(username=username)
             if bde_user.password==password:
                 request.session['user']=username
-                return render(request,'project.html',{'bde_user':bde_user})
+                # return render(request,'project.html',{'bde_user':bde_user})
+                return redirect('dashboard')
             else:
                 return render(request,'login.html',{'errors':'Invalid password.'})
         except models.BDE_User.DoesNotExist:

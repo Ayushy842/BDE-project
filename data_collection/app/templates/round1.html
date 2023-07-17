@@ -1,93 +1,157 @@
 <!DOCTYPE html>
 {% load static %}
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title></title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static 'css/project.css' %}">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    {% comment %} <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> {% endcomment %}
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{% static 'css/project.css' %}" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+      rel="stylesheet"
+    />
+    {% comment %}
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    {% endcomment %}
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <style>
-        body {
-            background: #FDC830;
-            background: -webkit-linear-gradient(to right, #F37335, #FDC830);
-            background: linear-gradient(to right, #F37335, #FDC830);
-        }
-        .form-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+      body {
+        background: #fdc830;
+        background: -webkit-linear-gradient(to right, #f37335, #fdc830);
+        background: linear-gradient(to right, #f37335, #fdc830);
+      }
+      .form-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     {% if errors %}
-                <div class="alert alert-danger">
-                    {% for error in errors %}
-                        {{ error }}
-                    {% endfor %}
-                </div>
+    <div class="alert alert-danger">
+      {% for error in errors %} {{ error }} {% endfor %}
+    </div>
     {% endif %}
-    <form class="form" method="POST" action="{% url 'round1' project_id=project_id %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="form-header">
-            <h2>Round1</h2>
-            <a class="movebtn movebtnsu" style='text-decoration:none;' href="{% url 'dashboard'  %}">Dashboard</a>
+    <form
+      class="form"
+      method="POST"
+      action="{% url 'round1' project_id=project_id %}"
+      enctype="multipart/form-data"
+    >
+      {% csrf_token %}
+      <div class="form-header">
+        <h2>Round1</h2>
+        <a
+          class="movebtn movebtnsu"
+          style="text-decoration: none"
+          href="{% url 'dashboard'  %}"
+          >Dashboard</a
+        >
+      </div>
+      <div class="form-group">
+        <label for="date">Date:</label>
+        <br />
+        <div class="relative">
+          <input
+            name="date"
+            class="form-control"
+            id="date"
+            type="date"
+            autofocus=""
+            autocomplete=""
+            placeholder="Select date..."
+            {%
+            if
+            round1_data.date
+            %}
+            value="{{round1_data.date|default_if_none:''|date:'Y-m-d'}}"
+            {%
+            endif
+            %}
+          />
+          <i class="fa fa-calendar"></i>
         </div>
-        <div class="form-group">
-            <label for="date">Date:</label>
-            <br>
-            <div class="relative">
-                <input name="date" class="form-control" id="date" type="date" autofocus="" autocomplete="" placeholder="Select date..." 
-                {% if round1_data.date %}
-                value="{{round1_data.date|default_if_none:''|date:'Y-m-d'}}"
-                {% endif %}>
-                <i class="fa fa-calendar"></i>
-            </div>
-            <br>
+        <br />
+      </div>
+      <div class="form-group">
+        <label for="screenshot_shared">Screenshot Shared:</label>
+        <div class="relative">
+          {% if round1_data.screenshot_shared %}
+          <p>
+            Uploaded Screenshot:
+            <a href="{{ round1_data.screenshot_shared.url }}" target="_blank"
+              >{{ round1_data.screenshot_shared.name }}</a
+            >
+          </p>
+          {% endif %}
+          <input
+            name="screenshot_shared"
+            class="form-control"
+            id="screenshot_shared"
+            type="file"
+            value="{{round1_data.screenshot_shared }}"
+          />
+          <i class="fa fa-file logo"></i>
         </div>
-        <div class="form-group">
-            <label for="screenshot_shared">Screenshot Shared:</label>
-            <div class="relative">
-                {% comment %} {% if round1_data.screeshot_shared %} {% endcomment %}
-                <input name="screenshot_shared" class="form-control" id="screenshot_shared" type="file" value="{{round1_data.screenshot_shared }}" />
-                <i class="fa fa-file logo"></i>
-            </div>
+      </div>
+      <br />
+      <div class="form-group">
+        <label for="our_review">Our Review:</label>
+        <div class="relative">
+          <textarea
+            class="form-control"
+            rows="5"
+            cols="40"
+            name="our_review"
+            id="our_review"
+            placeholder="Type your review..."
+          >
+{{ round1_data.our_review }}</textarea
+          >
+          <i class="fa fa-inbox"></i>
         </div>
-        <br>
-        <div class="form-group">
-            <label for="our_review">Our Review:</label>
-            <div class="relative">
-                <textarea class="form-control" rows='5' cols="40" name="our_review" id="our_review" placeholder="Type your review...">{{ round1_data.our_review }}</textarea>
-                <i class="fa fa-inbox"></i>
-            </div>
+      </div>
+      <br />
+      <div class="form-group">
+        <label for="client_review">Client Review:</label>
+        <div class="relative">
+          <textarea
+            class="form-control"
+            rows="5"
+            cols="40"
+            name="client_review"
+            id="client_review"
+            placeholder="Type your review..."
+          >
+{{ round1_data.client_review }}</textarea
+          >
+          <i class="fa fa-inbox"></i>
         </div>
-        <br>
-        <div class="form-group">
-            <label for="client_review">Client Review:</label>
-            <div class="relative">
-                <textarea class="form-control" rows='5' cols="40" name="client_review" id="client_review" placeholder="Type your review...">{{ round1_data.client_review }}</textarea>
-                <i class="fa fa-inbox"></i>
-            </div>
-        </div>
-        <br>
-        <div class="tright">
-            <button class="movebtn movebtnre" type="reset"><i class="fa fa-fw fa-refresh"></i> Reset </button>
-            <button class="movebtn movebtnsu" type="submit">Submit <i class="fa fa-fw fa-paper-plane"></i></button>
-        </div>
+      </div>
+      <br />
+      <div class="tright">
+        <button class="movebtn movebtnre" type="reset">
+          <i class="fa fa-fw fa-refresh"></i> Reset
+        </button>
+        <button class="movebtn movebtnsu" type="submit">
+          Submit <i class="fa fa-fw fa-paper-plane"></i>
+        </button>
+      </div>
     </form>
 
-    <div class="thanks" style="display: none;">
-        <h4>Thank you!</h4>
-        <p><small>Your message has been successfully sent.</small></p>
+    <div class="thanks" style="display: none">
+      <h4>Thank you!</h4>
+      <p><small>Your message has been successfully sent.</small></p>
     </div>
     <script src="{% static 'js/project.js' %}" async defer></script>
-</body>
+  </body>
 </html>
