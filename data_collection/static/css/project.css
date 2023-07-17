@@ -198,6 +198,11 @@ button:hover {
     box-shadow: inset 0 0 0 0 #1e439b;
     color: #1e439b;
 }
+.movebtnds {
+    border: 2px solid #1e439b;
+    box-shadow: inset 0 0 0 0 #1e439b;
+    color: #1e439b;
+}
 .movebtnre:focus,
 .movebtnre:hover,
 .movebtnre:active {
