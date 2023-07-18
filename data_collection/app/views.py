@@ -258,19 +258,46 @@ def round3(request, project_id):
 def edit_project(request, project_id):
     project = get_object_or_404(models.Project, pk=project_id)
     if request.method == 'POST':
-        project.project_name = request.POST.get('project_name')
-        project.technology = request.POST.get('technology')
-        project.date = request.POST.get('date')
-        project.requirement_recieved = request.POST.get('requirement_recieved')
-        project.edited_by = models.BDE_User.objects.get(username=request.session['user'])
-        resume_shared = request.POST.get('resume_shared')
-        print("Resume",resume_shared)
-        if resume_shared=="no":
-            project.resume_shared=False
-            return redirect('dashboard')
-        project.resume_shared=True
-        return redirect('round1',project_id=project.id)
-    context = {
-        'project': project,
-    }
-    return render(request, 'edit_project.html', context)
+        try:
+            project_name = request.POST.get('project_name')
+            technology = request.POST.get('technology')
+            date = request.POST.get('date')
+            requirement_recieved = request.POST.get('requirement_recieved')
+            edited_by = models.BDE_User.objects.get(username=request.session['user'])
+            resume_shared = request.POST.get('resume_shared')
+
+            # Check if the project object already exists
+            if project:
+                # Update the existing project object
+                project.project_name = project_name
+                project.technology = technology
+                project.date = date
+                project.requirement_recieved = requirement_recieved
+                project.edited_by = edited_by
+                if resume_shared == "no":
+                    project.resume_shared = False
+                    project.save()
+                    return redirect('dashboard')
+                project.resume_shared = True
+                project.save()
+            else:
+                # Create a new project object
+                project = models.Project(
+                    project_name=project_name,
+                    technology=technology,
+                    date=date,
+                    requirement_recieved=requirement_recieved,
+                    edited_by=edited_by,
+                    resume_shared=(resume_shared == "yes")
+                )
+                project.save()
+
+            return redirect('round1', project_id=project.id)
+        except Exception as e:
+            print("Error in edit_project view")
+            return render(request, 'edit_project.html', {'errors': 'Something Went Wrong, Sorry!'})
+    else:
+        context = {
+            'project': project,
+        }
+        return render(request, 'edit_project.html', context)
