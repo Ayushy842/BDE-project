@@ -15,28 +15,26 @@
     />
     <style>
       .gradient-custom {
-        background: #fdc830;
-        background: -webkit-linear-gradient(to right, #f37335, #fdc830);
-        background: linear-gradient(to right, #f37335, #fdc830);
+        background: navajowhite;
       }
       .card {
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
       }
-      .form-outline {
-        position: relative;
-      }
       .form-outline label {
-        position: absolute;
-        top: 1rem;
-        left: 1rem;
-        pointer-events: none;
-        transition: 0.3s;
+        display: block;
+        text-align: left;
+        margin-bottom: 0.5rem;
+        margin-right: 1rem;
       }
-      .form-outline input:focus ~ label,
-      .form-outline input:not(:placeholder-shown) ~ label {
-        top: -0.5rem;
-        font-size: 0.8rem;
-        color: #6c757d;
+      .form-outline input {
+        width: 100%;
+      }
+      .center-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
       }
     </style>
   </head>

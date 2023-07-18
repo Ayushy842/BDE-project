@@ -23,9 +23,7 @@
 
     <style>
       body {
-        background: #fdc830;
-        background: -webkit-linear-gradient(to right, #f37335, #fdc830);
-        background: linear-gradient(to right, #f37335, #fdc830);
+        background: navajowhite;
       }
       .form-header {
         display: flex;
@@ -80,46 +78,38 @@
         <div class="form-group">
           <label for="technology">Technology:</label>
           <div class="relative">
-            <input
-              name="technology"
+            <textarea
               class="form-control"
-              id="technology"
-              type="text"
+              name="technology"
+              rows="7"
+              cols="40"
               required=""
-              placeholder="Type The Technology..."
-            />
-            <i class="fa fa-inbox"></i>
+              placeholder="Enter project technology..."
+            >
+</textarea
+            >
+            <i class="fa fa-phone"></i>
           </div>
         </div>
-      </fieldset>
-      <br />
-      <div class="form-group">
-        <label for="resume">Resume Shared:</label>
-        <div class="relative">
-          <div class="form-check">
-            <input
-              name="resume_shared"
-              class="form-check-input"
-              id="resume-yes"
-              value="YES"
-              type="radio"
-            />
-            <label class="form-check-label" for="resume-yes">Yes</label>
-          </div>
-          <div class="form-check">
-            <input
-              name="resume_shared"
-              class="form-check-input"
-              id="resume-no"
-              value="NO"
-              type="radio"
-            />
-            <label class="form-check-label" for="resume-no">No</label>
-          </div>
-        </div>
-      </div>
-      <br />
 
+      </fieldset><br />
+      <div class="form-group">
+        <label for="resume_shared">Resume Shared:</label>
+        <div class="radio-inline " style='flex-direction:column;'>
+            <label class="radio-label ">
+                <input type="radio" name="resume_shared" value="yes" required="">
+                <span class="radio-custom"></span>
+                <span class="radio-text">Yes</span>
+                
+            </label>
+            <label class="radio-label">
+                <input type="radio" name="resume_shared" value="no" required="">
+                <span class="radio-custom"></span>
+                <span class="radio-text">No</span>
+            </label>
+        </div>
+    </div><br>
+      
       <div class="tright">
         <button class="movebtn movebtnre" type="reset">
           <i class="fa fa-fw fa-refresh"></i> Reset
