@@ -85,20 +85,13 @@
       <div class="form-group">
         <label for="screenshot_shared">Screenshot Shared:</label>
         <div class="relative">
-          {% if round1_data.screenshot_shared %}
-          <p>
-            Uploaded Screenshot:
-            <a href="{{ round1_data.screenshot_shared.url }}" target="_blank"
-              >{{ round1_data.screenshot_shared.name }}</a
-            >
-          </p>
-          {% endif %}
+          
           <input
             name="screenshot_shared"
             class="form-control"
             id="screenshot_shared"
             type="file"
-            value="{{round1_data.screenshot_shared }}"
+            value="{{ round1_data.screenshot_shared }}"
           />
           <i class="fa fa-file logo"></i>
         </div>
