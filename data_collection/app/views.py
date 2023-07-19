@@ -5,17 +5,23 @@ from requests import session
 from app import models
 import datetime
 from django.contrib import messages
+from django.db.models import Q
 from django.utils.dateparse import parse_date
 
 
 # Create your views here.
+
 def dashboard(request):
+    search_query = request.GET.get('search_query')
     projects = models.Project.objects.all()
     all_data = []
 
+    if search_query:
+        projects = projects.filter(Q(project_name__icontains=search_query))
+
     for project in projects:
         data = {
-            'project_id':project.id,
+            'project_id': project.id,
             'project_name': project.project_name,
             'technology': project.technology,
             'project_date': project.date,
@@ -44,7 +50,7 @@ def dashboard(request):
 
         all_data.append(data)
 
-    return render(request, 'dashboard.html', {'all_data': all_data})
+    return render(request, 'dashboard.html', {'all_data': all_data, 'search_query': search_query})
 
 
 def logout(request):
