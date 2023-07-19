@@ -100,41 +100,35 @@
       <div class="form-group">
         <label for="resume_shared">Resume Shared:</label>
         <div class="radio-inline" style="flex-direction: column">
-          <label class="radio-label">
-            <input
-              type="radio"
-              name="resume_shared"
-              value="yes"
-              required=""
-              {%
-              if
-              project.resume_shared
-              %}checked{%
-              endif
-              %}
-            />
-            <span class="radio-custom"></span>
-            <span class="radio-text">Yes</span>
-          </label>
-          <label class="radio-label">
-            <input
-              type="radio"
-              name="resume_shared"
-              value="no"
-              required=""
-              {%
-              if
-              not
-              project.resume_shared
-              %}checked{%
-              endif
-              %}
-            />
-            <span class="radio-custom"></span>
-            <span class="radio-text">No</span>
-          </label>
+            <label class="radio-label">
+                <input
+                    type="radio"
+                    name="resume_shared"
+                    value="yes"
+                    required=""
+                    {% if project.resume_shared %}
+                        checked
+                    {% endif %}
+                />
+                <span class="radio-custom"></span>
+                <span class="radio-text">Yes</span>
+            </label>
+            <label class="radio-label">
+                <input
+                    type="radio"
+                    name="resume_shared"
+                    value="no"
+                    required=""
+                    {% if not project.resume_shared %}
+                        checked
+                    {% endif %}
+                />
+                <span class="radio-custom"></span>
+                <span class="radio-text">No</span>
+            </label>
         </div>
-      </div>
+    </div>
+    
       <br />
       <div class="tright">
         <a href=""

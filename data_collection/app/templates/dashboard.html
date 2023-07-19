@@ -29,6 +29,25 @@
         .add-form {
             margin-bottom: 20px;
         }
+
+        .technology-content {
+            position: relative;
+        }
+    
+        .expand-button {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background-color: seashell;
+            color: black;
+            border: none;
+            padding: 2px 4px;
+            cursor: pointer;
+        }
+    
+        .full-content {
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body bgcolour ="cyan">
@@ -60,8 +79,16 @@
                 <tr>
                     <th scope="row">{{forloop.counter}}</th>
                     <td>{{ data.project_name }}</td>
-                    <td>{{ data.technology }}</td>
-                    <td>{{ data.project_date }}</td>
+                    <td>
+                        <div class="technology-content">
+                            <p class="initial-content">{{ data.technology|slice:":100" }}</p>
+                            {% if data.technology|length > 100 %}
+                                <button class="expand-button" onclick="expandContent(this)">...</button>
+                            {% endif %}
+                            <p class="full-content" style="display: none;">{{ data.technology }}</p>
+                        </div>
+                    </td>
+                                        <td>{{ data.project_date }}</td>
                     <td>{{ data.round1_date|default:'...........................' }}</td>
                     <td>{{ data.round2_date|default:'...........................'}}</td>
                     <td>{{ data.round3_date|default:'...........................'}}</td>
@@ -79,6 +106,24 @@
             </tbody>
         </table>
     </div>
+    <script>
+        function expandContent(button) {
+            const technologyContent = button.parentElement;
+            const initialContent = technologyContent.querySelector('.initial-content');
+            const fullContent = technologyContent.querySelector('.full-content');
+    
+            if (button.innerText === '...') {
+                initialContent.style.display = 'none';
+                fullContent.style.display = 'block';
+                button.innerText = '<';
+            } else {
+                initialContent.style.display = 'block';
+                fullContent.style.display = 'none';
+                button.innerText = '...';
+            }
+        }
+    </script>
+    
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

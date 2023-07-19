@@ -53,6 +53,11 @@
         <div class="form-group">
             <label for="screenshot_shared">Screenshot Shared:</label>
             <div class="relative">
+                {% if round2_data.screenshot_shared %}
+                    <a href="{{ round2_data.screenshot_shared.url }}">{{ round2_data.screenshot_shared.name }}</a>
+                {% else %}
+                    <span>No file uploaded</span>
+                {% endif %}
                 <input name="screenshot_shared" class="form-control" id="screenshot_shared" type="file" value="{{ round2_data.screenshot_shared }}">
                 <i class="fa fa-file"></i>
             </div>
@@ -68,7 +73,7 @@
         <div class="form-group">
             <label for="client_review">Client Review:</label>
             <div class="relative">
-                <textarea name="client_review" rows='5' cols="40" class="form-control" id="our_review"  placeholder="Type your review...">value="{{ round2_data.client_review }}</textarea>
+                <textarea name="client_review" rows='5' cols="40" class="form-control" id="client_review"  placeholder="Type your review...">{{ round2_data.client_review }}</textarea>
                 <i class="fa fa-inbox"></i>
             </div>
         </div><br>

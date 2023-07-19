@@ -203,10 +203,10 @@ def round2(request, project_id):
         
         return render(request, 'round2.html', {'project_id': project_id,'round2_data':round2_data})
 
-
 def round3(request, project_id):
     project = models.Project.objects.get(id=project_id)
     round3_data, created = models.Round3.objects.get_or_create(project=project)
+
     if request.method == "POST":
         try:
             date = request.POST.get('date')
@@ -214,24 +214,22 @@ def round3(request, project_id):
                 date = datetime.datetime.strptime(date, '%Y-%m-%d').date()
             else:
                 date = None
-            try:
-                screenshot_shared = request.FILES.get('screenshot_shared')
-                our_review = request.POST.get('our_review')
-                client_review = request.POST.get('client_review')
-                logged_in_user = models.BDE_User.objects.get(username=request.session['user'])
-            except Exception as e:
-                return render(request, 'round3.html', {'project_id': project_id, 'errors': 'Project not found'})
 
-            # Check if Round3 object already exists for the given project
+            screenshot_shared = request.FILES.get('screenshot_shared')  # Get the uploaded file
+            
             round3_obj = models.Round3.objects.filter(project=project).first()
 
             if round3_obj:
                 # Update the existing Round3 object
                 round3_obj.date = date
-                round3_obj.screenshot_shared = screenshot_shared
-                round3_obj.our_review = our_review
-                round3_obj.client_review = client_review
-                round3_obj.edited_by = logged_in_user
+                round3_obj.our_review = request.POST.get('our_review')
+                round3_obj.client_review = request.POST.get('client_review')
+                round3_obj.edited_by = models.BDE_User.objects.get(username=request.session['user'])
+
+                # Update the screenshot_shared field if a new file was uploaded
+                if screenshot_shared:
+                    round3_obj.screenshot_shared = screenshot_shared
+
                 round3_obj.save()
             else:
                 # Create a new Round3 object
@@ -239,20 +237,21 @@ def round3(request, project_id):
                     project=project,
                     date=date,
                     screenshot_shared=screenshot_shared,
-                    our_review=our_review,
-                    client_review=client_review,
-                    edited_by=logged_in_user
+                    our_review=request.POST.get('our_review'),
+                    client_review=request.POST.get('client_review'),
+                    edited_by=models.BDE_User.objects.get(username=request.session['user'])
                 )
                 round3_obj.save()
 
-            # Redirect to a success page
+            # Redirect to a success page or any other page
             return HttpResponseRedirect(reverse('success'))
         except ValueError:
             return render(request, 'round3.html', {'project_id': project_id, 'errors': 'Invalid date format'})
         except Exception as e:
+            
             return render(request, 'round3.html', {'project_id': project_id, 'errors': str(e)})
     else:
-        return render(request, 'round3.html', {'project_id': project_id,'round3_data':round3_data})
+        return render(request, 'round3.html', {'project_id': project_id, 'round3_data': round3_data})
 
 
 def edit_project(request, project_id):

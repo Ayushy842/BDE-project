@@ -35,15 +35,13 @@
                     {% endfor %}
                 </div>
                 {% endif %}
-    <form class="form" method="POST" action="{% url 'success' %}" enctype="multipart/form-data">
+    <form class="form" method="POST" action="{% url 'round3' project_id=project_id %}" enctype="multipart/form-data">
 
-                {% csrf_token %}
-        
-
-                <div class="form-header">
-                    <h2>Round 3 Profile</h2>
-                    <a class="movebtn movebtnsu" style='text-decoration:none;' href="{% url 'dashboard'  %}">Dashboard</a>
-                </div>
+        {% csrf_token %}
+        <div class="form-header">
+            <h2>Round 3 Profile</h2>
+            <a class="movebtn movebtnsu" style='text-decoration:none;' href="{% url 'dashboard'  %}">Dashboard</a>
+        </div>
         <div class="form-group">
             <label for="date">Date:</label>
             <br>
@@ -55,7 +53,12 @@
         <div class="form-group">
             <label for="screenshot_shared">Screenshot Shared:</label>
             <div class="relative">
-                <input name="screenshot_shared" class="form-control" id="screenshot_shared" type="file" value="{{ round3_data.screenshot_shared }}">
+                {% if round3_data.screenshot_shared %}
+                    <a href="{{ round3_data.screenshot_shared.url }}">{{ round3_data.screenshot_shared.name }}</a>
+                {% else %}
+                    <span>No file uploaded</span>
+                {% endif %}
+                <input name="screenshot_shared" class="form-control" id="screenshot_shared" type="file">
                 <i class="fa fa-file"></i>
             </div>
         </div><br>
@@ -70,7 +73,7 @@
         <div class="form-group">
             <label for="client_review">Client Review:</label>
             <div class="relative">
-                <textarea name="client_review" rows='5' cols="40" class="form-control" id="our_review"  placeholder="Type your review...">{{  round3_data.client_review }}</textarea>
+                <textarea name="client_review" rows='5' cols="40" class="form-control" id="client_review"  placeholder="Type your review...">{{  round3_data.client_review }}</textarea>
                 <i class="fa fa-inbox"></i>
             </div>
         </div><br>

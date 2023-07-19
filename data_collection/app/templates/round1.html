@@ -83,6 +83,11 @@
       <div class="form-group">
         <label for="screenshot_shared">Screenshot Shared:</label>
         <div class="relative">
+          {% if round1_data.screenshot_shared %}
+                    <a href="{{ round1_data.screenshot_shared.url }}">{{ round1_data.screenshot_shared.name }}</a>
+                {% else %}
+                    <span>No file uploaded</span>
+                {% endif %}
           <input
             name="screenshot_shared"
             class="form-control"

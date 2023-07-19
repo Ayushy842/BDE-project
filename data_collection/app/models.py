@@ -1,9 +1,15 @@
 from django.db import models
-
+from django.core.validators import RegexValidator
 # Create your models here.
 class BDE_User(models.Model):
     emp_code = models.IntegerField()
-    emp_name = models.CharField(max_length=256)
+    emp_name = models.CharField(max_length=256,validators=[
+            RegexValidator(
+                regex=r'^[a-zA-Z\s]+$',
+                message="Employee name should contain only letters and spaces.",
+                code="invalid_emp_name",
+            ),
+        ],)
     username = models.CharField(max_length=256,unique=True)
     password = models.CharField(max_length=256)
     def __str__(self) -> str:
