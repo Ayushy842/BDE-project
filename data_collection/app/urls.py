@@ -14,4 +14,5 @@ urlpatterns = [
     path("round1/<int:project_id>/",secondmiddleware(views.round1),name="round1"),
     path("round2/<int:project_id>/",secondmiddleware(views.round2),name="round2"),
     path("round3/<int:project_id>/",secondmiddleware(views.round3),name="round3"),
+    path("view-data/<int:project_id>/",secondmiddleware(views.view_data),name="view-data"),
 ]
