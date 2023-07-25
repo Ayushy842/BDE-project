@@ -81,17 +81,29 @@
         <div class="form-group">
           <label for="technology">Technology:</label>
           <div class="relative">
-            <textarea
+            <input
               class="form-control"
               name="technology"
+              required=""
+              placeholder="Enter project technology..."
+              value="{{ project.technology }}"
+            />
+            <i class="fa fa-cogs"></i>
+          </div>
+        </div><br>
+        <div class="form-group">
+          <label for="job_description">Job Description:</label>
+          <div class="relative">
+            <textarea
+              class="form-control"
+              name="job_description"
               rows="7"
               cols="40"
               required=""
-              placeholder="Enter project technology..."
-            >
-{{ project.technology }}</textarea
-            >
-            <i class="fa fa-cogs"></i>
+              placeholder="Enter job_description ..."
+            >{{ project.job_description }}
+</textarea>
+            <i class="fa fa-info"></i>
           </div>
         </div>
       </fieldset>

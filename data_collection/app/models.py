@@ -19,6 +19,7 @@ class Project(models.Model):
     project_name = models.CharField(max_length=256)
     date = models.DateField(default='',blank=True)
     technology = models.CharField(max_length=256, blank=True)
+    job_description = models.CharField(max_length=256, blank=True)
     resume_shared = models.BooleanField(default=False)
     edited_by = models.ForeignKey(BDE_User,on_delete=models.SET_NULL,null=True)
     def __str__(self) -> str:

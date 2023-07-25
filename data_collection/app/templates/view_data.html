@@ -1,138 +1,153 @@
 <!DOCTYPE html>
 {% load static %}
-{% comment %}  {% endcomment %}
 <html>
-<head>
+  <head>
     <title>View Data | {% block title %}{% endblock title %}</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
     <style>
-        
-        body {
-            padding: 20px;
-            background-color:seashell;
-        }
+      body {
+        padding: 20px;
+        background-color: seashell;
+      }
     </style>
-</head>
-<body bgcolour ="cyan">
-    <h3 style="text-align:center;">Project Details</h3>
+  </head>
+  <body bgcolour="cyan">
+    <div style="position: relative">
+      <h1>Project Details</h1>
+      <a
+        class="btn btn-primary"
+        style="position: absolute; top: 0; right: 0"
+        href="{% url 'dashboard' %}"
+      >
+        Dashboard</a
+      >
+    </div>
     <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Project Name</th>
-                <th scope="col">Technology</th>
-                <th scope="col">Project Date</th>
-                <th scope="col">Job Description</th>
-                <th scope="col">Resume Shared</th>
-                <th scope="col">Edited By</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{ project_data.project_name}}</td>
-                <td>{{ project_data.technology}}</td>
-                <td>{{ project_data.date}}</td>
-                <td>{{ project_data.job_description}}
-                    <div class="technology-content">
-                        <p class="initial-content">{{ data.technology|slice:":100" }}</p>
-                        {% if project_data.job_description|length > 100 %}
-                            <button class="expand-button" onclick="expandContent(this)">...</button>
-                        {% endif %}
-                        <p class="full-content" style="display: none;">{{ project_data.job_description }}</p>
-                    </div>
-                </td>
-                <td>{{ project_data.resume_shared}}</td>
-                <td>{{ project_data.edited_by}}</td>
-            </tr>
-        </tbody>
+      <thead>
+        <tr>
+          <th scope="col">Project Name</th>
+          <th scope="col">Technology</th>
+          <th scope="col">Project Date</th>
+          <th scope="col">Job Description</th>
+          <th scope="col">Resume Shared</th>
+          <th scope="col">Edited By</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ project_data.project_name}}</td>
+          <td>{{ project_data.technology}}</td>
+          <td>{{ project_data.date}}</td>
+          <td>
+            {{ project_data.job_description}}
+            <div class="technology-content">
+              <p class="initial-content">{{ data.technology|slice:":100" }}</p>
+              {% if project_data.job_description|length > 100 %}
+              <button class="expand-button" onclick="expandContent(this)">
+                ...
+              </button>
+              {% endif %}
+              <p class="full-content" style="display: none">
+                {{ project_data.job_description }}
+              </p>
+            </div>
+          </td>
+          <td>{{ project_data.resume_shared}}</td>
+          <td>{{ project_data.edited_by}}</td>
+        </tr>
+      </tbody>
     </table>
-    <br><br>
+    <br /><br />
 
-    <h3 style="text-align:center;">Round1 Details</h3>
+    <h3 style="text-align: center">Round1 Details</h3>
     <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Date</th>
-                <th scope="col">Screenshot Shared</th>
-                <th scope="col">Our Review</th>
-                <th scope="col">Client Review</th>
-                <th scope="col">Edited By</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{ round1_data.date}}</td>
-                <td>{{ round1_data.screenshot_shared }}</td>
-                <td>{{ round1_data.our_review }}</td>
-                <td>{{ round1_data.client_review }}</td>
-                <td>{{ round1_data.edited_by }}</td>
-            </tr>
-        </tbody>
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Screenshot Shared</th>
+          <th scope="col">Our Review</th>
+          <th scope="col">Client Review</th>
+          <th scope="col">Edited By</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ round1_data.date}}</td>
+          <td>{{ round1_data.screenshot_shared }}</td>
+          <td>{{ round1_data.our_review }}</td>
+          <td>{{ round1_data.client_review }}</td>
+          <td>{{ round1_data.edited_by }}</td>
+        </tr>
+      </tbody>
     </table>
-    <br><br>
+    <br /><br />
 
-    <h3 style="text-align:center;">Round2 Details</h3>
+    <h3 style="text-align: center">Round2 Details</h3>
     <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Date</th>
-                <th scope="col">Screenshot Shared</th>
-                <th scope="col">Our Review</th>
-                <th scope="col">Client Review</th>
-                <th scope="col">Edited By</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{ round2_data.date}}</td>
-                <td>{{ round2_data.screenshot_shared }}</td>
-                <td>{{ round2_data.our_review }}</td>
-                <td>{{ round2_data.client_review }}</td>
-                <td>{{ round2_data.edited_by }}</td>
-            </tr>
-        </tbody>
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Screenshot Shared</th>
+          <th scope="col">Our Review</th>
+          <th scope="col">Client Review</th>
+          <th scope="col">Edited By</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ round2_data.date}}</td>
+          <td>{{ round2_data.screenshot_shared }}</td>
+          <td>{{ round2_data.our_review }}</td>
+          <td>{{ round2_data.client_review }}</td>
+          <td>{{ round2_data.edited_by }}</td>
+        </tr>
+      </tbody>
     </table>
-    <br><br>
-    <h3 style="text-align:center;">Round3 Details</h3>
+    <br /><br />
+    <h3 style="text-align: center">Round3 Details</h3>
     <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Date</th>
-                <th scope="col">Screenshot Shared</th>
-                <th scope="col">Our Review</th>
-                <th scope="col">Client Review</th>
-                <th scope="col">Edited By</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{ round3_data.date}}</td>
-                <td>{{ round3_data.screenshot_shared }}</td>
-                <td>{{ round3_data.our_review }}</td>
-                <td>{{ round3_data.client_review }}</td>
-                <td>{{ round3_data.edited_by }}</td>
-            </tr>
-        </tbody>
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Screenshot Shared</th>
+          <th scope="col">Our Review</th>
+          <th scope="col">Client Review</th>
+          <th scope="col">Edited By</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ round3_data.date}}</td>
+          <td>{{ round3_data.screenshot_shared }}</td>
+          <td>{{ round3_data.our_review }}</td>
+          <td>{{ round3_data.client_review }}</td>
+          <td>{{ round3_data.edited_by }}</td>
+        </tr>
+      </tbody>
     </table>
-    
+
     <script>
-        function expandContent(button) {
-            const technologyContent = button.parentElement;
-            const initialContent = technologyContent.querySelector('.initial-content');
-            const fullContent = technologyContent.querySelector('.full-content');
-    
-            if (button.innerText === '...') {
-                initialContent.style.display = 'none';
-                fullContent.style.display = 'block';
-                button.innerText = '<';
-            } else {
-                initialContent.style.display = 'block';
-                fullContent.style.display = 'none';
-                button.innerText = '...';
-            }
+      function expandContent(button) {
+        const technologyContent = button.parentElement;
+        const initialContent =
+          technologyContent.querySelector(".initial-content");
+        const fullContent = technologyContent.querySelector(".full-content");
+        if (button.innerText === "...") {
+          initialContent.style.display = "none";
+          fullContent.style.display = "block";
+          button.innerText = "<";
+        } else {
+          initialContent.style.display = "block";
+          fullContent.style.display = "none";
+          button.innerText = "...";
         }
+      }
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
+  </body>
 </html>

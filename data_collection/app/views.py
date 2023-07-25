@@ -95,6 +95,7 @@ def project(request):
         try:
             project_name = request.POST.get('project_name')
             technology = request.POST.get('technology')
+            job_description = request.POST.get('job_description')
             date = datetime.datetime.strptime(
                 request.POST.get('date'), '%Y-%m-%d').date()
             print("date", date)
@@ -103,12 +104,12 @@ def project(request):
                 username=request.session['user'])
 
             if resume_shared == 'NO':
-                project = models.Project(project_name=project_name, date=date,
+                project = models.Project(project_name=project_name, date=date, job_description=job_description,
                                          technology=technology, resume_shared=False, edited_by=logged_in_user)
                 project.save()
                 return redirect('dashboard')
             project = models.Project(project_name=project_name, date=date,
-                                     technology=technology, resume_shared=True, edited_by=logged_in_user)
+                                     technology=technology, job_description=job_description, resume_shared=True, edited_by=logged_in_user)
 
             project.save()
             print("Project ID: ", project.id)
@@ -276,6 +277,7 @@ def edit_project(request, project_id):
         try:
             project_name = request.POST.get('project_name')
             technology = request.POST.get('technology')
+            job_description = request.POST.get('job_description')
             date = request.POST.get('date')
             requirement_recieved = request.POST.get('requirement_recieved')
             edited_by = models.BDE_User.objects.get(
@@ -287,6 +289,7 @@ def edit_project(request, project_id):
                 # Update the existing project object
                 project.project_name = project_name
                 project.technology = technology
+                project.job_description = job_description
                 project.date = date
                 project.requirement_recieved = requirement_recieved
                 project.edited_by = edited_by
@@ -301,6 +304,7 @@ def edit_project(request, project_id):
                 project = models.Project(
                     project_name=project_name,
                     technology=technology,
+                    job_description=job_description,
                     date=date,
                     requirement_recieved=requirement_recieved,
                     edited_by=edited_by,
