@@ -12,6 +12,8 @@ class BDE_User(models.Model):
         ],)
     username = models.CharField(max_length=256,unique=True)
     password = models.CharField(max_length=256)
+    # email = models.EmailField(blank=True, null=True)
+    # is_email_verified = models.BooleanField(default=False)
     def __str__(self) -> str:
         return self.emp_name
     
@@ -22,6 +24,7 @@ class Project(models.Model):
     job_description = models.CharField(max_length=256, blank=True)
     resume_shared = models.BooleanField(default=False)
     edited_by = models.ForeignKey(BDE_User,on_delete=models.SET_NULL,null=True)
+    folder_id = models.CharField(max_length=50,default=0,blank=True,null=True)
     def __str__(self) -> str:
         return self.project_name
             

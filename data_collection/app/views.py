@@ -1,24 +1,142 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
-from requests import session
+from openpyxl import Workbook, load_workbook
 from app import models
 import datetime
+import time
 from django.contrib import messages
 from django.db.models import Q
-from django.utils.dateparse import parse_date
+import requests
+import json
+from whatsapp_api_client_python import API
+import schedule
+
+
+ACCESS_TOKEN = "ya29.a0AbVbY6MRBnrQc8_wEMSIWaHPKKV8ljsfbK7ChsSy9-GAToqe8swB5CHMIlMeEWyMim5lgH_I8EN5BrP512TCYhEexyraA6fZuxsJUaCo2UffVLXa0S49_XU80nIDS_D_AIdnD0kgBnCq4KhPaO8NkHfvN9WyaCgYKAcMSARISFQFWKvPlKfvyYIzfdj3gSJpYpbTdjw0163"
 
 
 # Create your views here.
+
+# Function to create a folder and get its ID
+def create_folder(folder_name):
+    headers = {
+        "Authorization": f"Bearer {ACCESS_TOKEN}",
+        "Content-Type": "application/json"
+    }
+    
+    folder_metadata = {
+        "name": folder_name,
+        "mimeType": "application/vnd.google-apps.folder"
+    }
+    
+    response = requests.post("https://www.googleapis.com/drive/v3/files", headers=headers, json=folder_metadata)
+    
+    # Check if the response indicates an error
+    if response.status_code != 200:
+        print("Error:", response.status_code, response.json())
+        return None
+
+    folder_data = response.json()
+    folder_id = folder_data.get("id")
+    return folder_id
+
+
+def upload_file_to_drive(file_path, file_name, parent_folder_id=None):
+    headers = {
+        "Authorization": f"Bearer {ACCESS_TOKEN}",
+    }
+    folder_id = parent_folder_id if parent_folder_id else ""
+    para = {
+        "name": file_name,
+        "parents": [folder_id]
+    }
+    files = {
+        "data": ('metadata', json.dumps(para), 'application/json'),
+        "file": (file_name, open(file_path, "rb"), 'image/png')
+    }
+
+    response = requests.post("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart", headers=headers, files=files)
+    print(response)
+    return response.json()
+
+def export_to_spreadsheet(request):
+    projects = models.Project.objects.all()
+
+    wb = Workbook()
+    ws = wb.active
+
+    # Write the headers
+    headers = ['Project Name', 'Technology', 'Job Description', 'Date', 'Resume Shared', 'Round_1 Date', 'Round_1 Screenshot', 'Round_1 our review', 'Round_1 client review', 'Round_2 Date', 'Round_2 Screenshot', 'Round_2 our review', 'Round_2 client review', 'Round_3 Date', 'Round_3 Screenshot', 'Round_3 our review', 'Round_3 client review']
+    ws.append(headers)
+
+    # ... (Previous code remains unchanged) ...
+
+# Write the data to the spreadsheet
+    for project in projects:
+        row_data = [
+        project.project_name,
+        project.technology,
+        project.job_description,
+        project.date,
+        'Yes' if project.resume_shared else 'No',
+    ]
+
+    # Fetch the round1, round2, round3 data for each project
+    try:
+        round1_data = models.Round1.objects.get(project=project)
+        row_data.append(round1_data.date)
+        if round1_data.screenshot_shared and round1_data.screenshot_shared.url:
+            row_data.append(round1_data.screenshot_shared.url)
+        else:
+            row_data.append('')
+        row_data.append(round1_data.our_review)
+        row_data.append(round1_data.client_review)
+    except models.Round1.DoesNotExist:
+        row_data.extend(['', '', '', ''])
+
+    try:
+        round2_data = models.Round2.objects.get(project=project)
+        row_data.append(round2_data.date)
+        if round2_data.screenshot_shared and round2_data.screenshot_shared.url:
+            row_data.append(round2_data.screenshot_shared.url)
+        else:
+            row_data.append('')
+        row_data.append(round2_data.our_review)
+        row_data.append(round2_data.client_review)
+    except models.Round2.DoesNotExist:
+        row_data.extend(['', '', '', ''])
+
+    try:
+        round3_data = models.Round3.objects.get(project=project)
+        row_data.append(round3_data.date)
+        if round3_data.screenshot_shared and round3_data.screenshot_shared.url:
+            row_data.append(round3_data.screenshot_shared.url)
+        else:
+            row_data.append('')
+        row_data.append(round3_data.our_review)
+        row_data.append(round3_data.client_review)
+    except models.Round3.DoesNotExist:
+        row_data.extend(['', '', '', ''])
+
+    ws.append(row_data)  # Write the row_data to the worksheet
+
+# ... (Remaining code remains unchanged) ...
+
+    # Save the workbook to a response and return it
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=exported_data.xlsx'
+    wb.save(response)
+
+    return response
+
 
 def dashboard(request):
     search_query = request.GET.get('search_query')
     projects = models.Project.objects.all()
     all_data = []
-
     if search_query:
         projects = projects.filter(Q(project_name__icontains=search_query))
-
     for project in projects:
         data = {
             'project_id': project.id,
@@ -29,7 +147,6 @@ def dashboard(request):
             'round2_date': '',  # Default value or placeholder for Round2
             'round3_date': '',  # Default value or placeholder for Round3
         }
-
         try:
             round1 = models.Round1.objects.get(project=project)
             data['round1_date'] = round1.date
@@ -102,17 +219,19 @@ def project(request):
             resume_shared = request.POST.get('resume_shared', 'NO')
             logged_in_user = models.BDE_User.objects.get(
                 username=request.session['user'])
-
             if resume_shared == 'NO':
                 project = models.Project(project_name=project_name, date=date, job_description=job_description,
                                          technology=technology, resume_shared=False, edited_by=logged_in_user)
                 project.save()
                 return redirect('dashboard')
+            folder_name = project_name
+            folder_id = create_folder(folder_name)
             project = models.Project(project_name=project_name, date=date,
-                                     technology=technology, job_description=job_description, resume_shared=True, edited_by=logged_in_user)
+                                     technology=technology, job_description=job_description, resume_shared=True, edited_by=logged_in_user,
+                                     folder_id=folder_id)
 
             project.save()
-            print("Project ID: ", project.id)
+            
             return redirect('dashboard')
             # return redirect('round1', project_id=project.id)
         except Exception as e:
@@ -161,7 +280,12 @@ def round1(request, project_id):
                     edited_by=logged_in_user
                 )
                 round1_obj.save()
-
+            if screenshot_shared:
+                parent_folder_id = project.folder_id
+                file_path = 'screenshots/'+str(screenshot_shared)
+                file_name = project.project_name+"_round1_"+project.technology
+                response = upload_file_to_drive(file_path, file_name, parent_folder_id)
+                print(response)    
             return redirect('round2', project_id=project.id)
         except Exception as e:
             print("Error in round1 view")
@@ -208,7 +332,12 @@ def round2(request, project_id):
                     edited_by=logged_in_user
                 )
                 round2_obj.save()
-
+            if screenshot_shared:
+                parent_folder_id = project.folder_id
+                file_path = 'screenshots/'+str(screenshot_shared)
+                file_name = project.project_name+"_round2_"+project.technology
+                response = upload_file_to_drive(file_path, file_name, parent_folder_id)
+                print(response)
             return redirect('round3', project_id=project_id)
         except Exception as e:
             return render(request, 'round2.html', {'errors': 'Something Went Wrong, Sorry!'})
@@ -259,7 +388,12 @@ def round3(request, project_id):
                         username=request.session['user'])
                 )
                 round3_obj.save()
-
+            if screenshot_shared:                
+                parent_folder_id = project.folder_id
+                file_path = 'screenshots/'+str(screenshot_shared)
+                file_name = project.project_name+"_round3_"+project.technology
+                response = upload_file_to_drive(file_path, file_name, parent_folder_id)
+                print(response)
             # Redirect to a success page or any other page
             return HttpResponseRedirect(reverse('success'))
         except ValueError:
@@ -325,8 +459,13 @@ def edit_project(request, project_id):
 
 def view_data(request, project_id):
     project_data = get_object_or_404(models.Project, id=project_id)
-    round1_data = get_object_or_404(models.Round1, project=project_data)
-    round2_data = get_object_or_404(models.Round2,  project=project_data)
-    round3_data = get_object_or_404(models.Round3,  project=project_data)
-    return render(request, 'view_data.html',    {'project_data': project_data, 'round1_data': round1_data, 'round2_data': round2_data, 'round3_data': round3_data}
+    try:
+        round1_data = get_object_or_404(models.Round1, project=project_data)
+        round2_data = get_object_or_404(models.Round2,  project=project_data)
+        round3_data = get_object_or_404(models.Round3,  project=project_data)
+        return render(request, 'view_data.html',    {'project_data': project_data, 'round1_data': round1_data, 'round2_data': round2_data, 'round3_data': round3_data}
                   )
+    except Exception as e:
+        return render(request,'view_data.html',    {'project_data': project_data})    
+    
+    

@@ -10,9 +10,11 @@ urlpatterns = [
     path("dashboard/",firstmiddleware(views.dashboard),name="dashboard"),
     path("success/",firstmiddleware(views.success),name="success"),
     path('delete/<int:project_id>/', views.delete, name='delete'), 
-    path('edit_project/<int:project_id>/', views.edit_project, name='edit_project'),
+    path('edit_project/<int:project_id>/', secondmiddleware(views.edit_project), name='edit_project'),
     path("round1/<int:project_id>/",secondmiddleware(views.round1),name="round1"),
     path("round2/<int:project_id>/",secondmiddleware(views.round2),name="round2"),
     path("round3/<int:project_id>/",secondmiddleware(views.round3),name="round3"),
     path("view-data/<int:project_id>/",secondmiddleware(views.view_data),name="view-data"),
+    path('export/', views.export_to_spreadsheet, name='export_to_spreadsheet'),
+
 ]
